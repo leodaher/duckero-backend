@@ -10,9 +10,6 @@ def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
 
-    # Override config with instance folder config
-    app.config.from_pyfile("config.py")
-
     # Blueprints registering
     app.register_blueprint(auth_api)
 
