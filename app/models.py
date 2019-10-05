@@ -38,7 +38,7 @@ class User(BaseMixin, db.Model):
 
     @classmethod
     def is_email_taken(cls, email):
-        return User.query().filter_by(email=email).first() is None
+        return User.query().filter_by(email=email).first() is not None
 
     def __repr__(self):
         return "<id {}>".format(self.id)
