@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from app.auth import auth_api
 from app.database import db
@@ -15,5 +16,8 @@ def create_app(config_name):
 
     # Init application database
     db.init_app(app)
+
+    # Enable CORS for our application
+    CORS(app)
 
     return app
