@@ -5,7 +5,7 @@ class Config:
     """Parent configuration class"""
 
     DEBUG = False
-    SECRET = os.getenv("SECRET")
+    SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
 
@@ -19,8 +19,9 @@ class TestingConfig(Config):
     """Configuration for testing"""
 
     TESTING = True
-    # SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL")
     DEBUG = True
+    SECRET_KEY = os.urandom(24)
 
 
 class ProductionConfig(Config):
