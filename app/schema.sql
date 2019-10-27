@@ -1,11 +1,10 @@
 create extension if not exists "uuid-ossp";
 drop table if exists users;
 create table users (
-    id uuid default uuid_generate_v4 (),
-    email text not null,
+    id uuid not null unique default uuid_generate_v4 (),
+    email text not null unique,
     ranking integer not null,
-    clicks integer,
-    subscribers integer,
-    link uuid,
+    clicks integer default 0,
+    subscribers integer default 0,
     primary key(id)
 )

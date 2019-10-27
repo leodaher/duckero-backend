@@ -9,12 +9,13 @@ from app.utils import is_valid_uuid
 class User(BaseMixin, db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String())
-    ranking = db.Column(db.Integer)
-    clicks = db.Column(db.Integer)
-    subscribers = db.Column(db.Integer)
-    link = db.Column(UUID(as_uuid=True), unique=True, nullable=False, default=uuid4)
+    id = db.Column(
+        UUID(as_uuid=True), primary_key=True, unique=True, default=uuid4, nullable=False
+    )
+    email = db.Column(db.String(), unique=True, nullable=False)
+    ranking = db.Column(db.Integer, nullable=False)
+    clicks = db.Column(db.Integer, default=0)
+    subscribers = db.Column(db.Integer, default=0)
 
     def __init__(self, email=None, ranking=None, clicks=0, subscribers=0, ref=None):
         self.email = email
@@ -32,7 +33,7 @@ class User(BaseMixin, db.Model):
 
         # Check if it was referenced from another user
         if ref is not None and is_valid_uuid(ref):
-            user_ref = User.query().filter_by(link=ref).first()
+            user_ref = User.query().filter_by(id=ref).first()
             if user_ref is not None:
                 user_ref.subscribers += 1
 
@@ -41,7 +42,7 @@ class User(BaseMixin, db.Model):
         return User.query().filter_by(email=email).first() is not None
 
     def __repr__(self):
-        return "<id {}>".format(self.id)
+        return "<User id:{}>".format(self.id)
 
     def __str__(self):
         return "<User id:{} email:{} ranking:{}>".format(
