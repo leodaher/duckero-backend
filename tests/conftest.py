@@ -1,11 +1,17 @@
 import os
 import tempfile
 
+from faker import Faker
 import pytest
 
 from app import create_app
 from app.database import db
 from app.models import User
+
+
+@pytest.fixture
+def faker():
+    return Faker()
 
 
 @pytest.fixture
@@ -22,5 +28,5 @@ def client():
 
 
 @pytest.fixture
-def user():
-    return User.create(email="test@gmail.com")
+def user(faker):
+    return User.create(email=faker.email())

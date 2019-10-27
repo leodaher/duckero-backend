@@ -29,7 +29,7 @@ def sign_up():
 
     rv = jsonify(
         {
-            "user": {"email": user.email, "ranking": user.ranking, "link": user.link},
+            "user": {"email": user.email, "ranking": user.ranking},
             "token": token.decode("utf-8"),
         }
     )
