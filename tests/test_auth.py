@@ -1,10 +1,9 @@
+from uuid import uuid4
 import json
 
-from jwt import ExpiredSignatureError, InvalidTokenError
 from unittest import mock
 
 from app.models import User
-from app.auth import encode_auth_token, decode_auth_token
 
 
 def test_sign_up_without_email(client):
@@ -33,67 +32,40 @@ def test_sign_up_with_taken_email(mock_is_email_taken, client):
     assert User.query().filter_by(email="test@rb.com.br").count() == num_of_rows
 
 
-def test_sign_up(client):
+def test_sign_up(client, faker):
+    email = faker.email()
 
     rv = client.post(
-        "/sign_up",
-        content_type="application/json",
-        data=json.dumps({"email": "test@rb.com.br"}),
+        "/sign_up", content_type="application/json", data=json.dumps({"email": email})
     )
     json_data = rv.get_json()
 
-    assert "token" in json_data
     assert "user" in json_data
-    assert json_data["user"]["email"] == "test@rb.com.br"
+    assert json_data["user"]["email"] == email
     assert rv.status_code == 201
-    assert User.get_by(email="test@rb.com.br") is not None
+    assert User.get_by(email=email) is not None
 
 
-def test_verify_token_without_token(client):
+def test_get_user_with_invalid_id(client):
+    id = uuid4()
 
-    rv = client.post("/verify_token")
+    rv = client.get("/users/" + str(id))
     json_data = rv.get_json()
 
-    assert "message" in json_data
-    assert json_data["message"] == "User is not authenticated"
-    assert rv.status_code == 403
+    assert json_data["message"] == "This id is not associated to a user"
+    assert rv.status_code == 404
 
 
-@mock.patch("app.auth.decode_auth_token")
-def test_verify_token_with_expired_token(mock_decode_token, client):
-    token = "token123"
-    mock_decode_token.side_effect = ExpiredSignatureError
+def test_get_user(user, client):
+    id = user.id
 
-    rv = client.post("/verify_token", headers={"Authorization": token})
+    rv = client.get("/users/" + str(id))
     json_data = rv.get_json()
 
-    assert "message" in json_data
-    assert json_data["message"] == "Token has expired"
-    assert rv.status_code == 403
+    assert "user" in json_data
 
+    rv_user = json_data["user"]
 
-@mock.patch("app.auth.decode_auth_token")
-def test_verify_token_with_invalid_token(mock_decode_token, client):
-    token = "token123"
-    mock_decode_token.side_effect = InvalidTokenError
-
-    rv = client.post("/verify_token", headers={"Authorization": token})
-    json_data = rv.get_json()
-
-    assert "message" in json_data
-    assert json_data["message"] == "Token is invalid"
-    assert rv.status_code == 403
-
-
-def test_encode_auth_token(user):
-    token = encode_auth_token(str(user.id))
-
-    assert token is not None
-
-
-def test_decode_auth_token(user):
-    token = encode_auth_token(str(user.id))
-
-    user_id = decode_auth_token(token)
-
-    assert user_id == str(user.id)
+    assert rv_user["id"] == str(user.id)
+    assert rv_user["email"] == user.email
+    assert rv_user["ranking"] == user.ranking
