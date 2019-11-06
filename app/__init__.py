@@ -5,6 +5,7 @@ from flask_cors import CORS
 from config import app_config
 from app.auth import auth_api
 from app.database import db
+from app.extensions.mail import mail
 
 
 def create_app(config_name):
@@ -15,6 +16,9 @@ def create_app(config_name):
 
     # Init application database
     db.init_app(app)
+
+    # Init e-mail config
+    mail.init_app(app)
 
     # Enable CORS for our application
     CORS(app)

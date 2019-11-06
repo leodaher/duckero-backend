@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
+from flask_mail import Mail, Message
 
+from app.extensions.mail import mail, send_sign_up_mail
 from app.models import User
 
 auth_api = Blueprint("auth_api", __name__)
@@ -22,6 +24,9 @@ def sign_up():
 
     # Create and add user to database
     user = User.create(email=data["email"], ref=data.get("ref"))
+
+    # Send email to user
+    send_sign_up_mail(user)
 
     rv = jsonify(
         {"user": {"id": user.id, "email": user.email, "ranking": user.ranking}}
