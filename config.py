@@ -8,6 +8,14 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
+    # Mail settings
+    MAIL_SERVER = os.getenv("MAIL_SERVER")
+    MAIL_PORT = os.getenv("MAIL_PORT")
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+
 
 class DevelopmentConfig(Config):
     """Configuration for development"""

@@ -7,6 +7,7 @@ Faker==2.0.3
 Flask==1.1.1
 Flask-SQLAlchemy==2.4.0
 Flask-Cors==3.0.8
+Flask-Mail==0.9.1
 importlib-metadata==0.23
 itsdangerous==1.1.0
 Jinja2==2.10.1

@@ -32,7 +32,8 @@ def test_sign_up_with_taken_email(mock_is_email_taken, client):
     assert User.query().filter_by(email="test@rb.com.br").count() == num_of_rows
 
 
-def test_sign_up(client, faker):
+@mock.patch("app.auth.send_sign_up_mail")
+def test_sign_up(mock_sign_up_mail, client, faker):
     email = faker.email()
 
     rv = client.post(
@@ -44,6 +45,7 @@ def test_sign_up(client, faker):
     assert json_data["user"]["email"] == email
     assert rv.status_code == 201
     assert User.get_by(email=email) is not None
+    assert mock_sign_up_mail.call_count == 1
 
 
 def test_get_user_with_invalid_id(client):
