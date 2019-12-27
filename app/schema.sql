@@ -6,5 +6,6 @@ create table users (
     ranking integer not null,
     clicks integer default 0,
     subscribers integer default 0,
+    created_date timestamp not null,
     primary key(id)
 )
