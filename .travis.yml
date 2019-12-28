@@ -1,8 +1,10 @@
 language: "python"
 python:
-    - "3.7.4"
+    - "3.6.8"
+before_install:
+    - pip install poetry
 install:
-    - pip install -r requirements.txt
+    - poetry install
 env:
     - FLASK_APP="run.py" DATABASE_URL="postgres://localhost/rb_landing" TEST_DATABASE_URL="postgres://localhost/test_rb_landing" APP_SETTINGS="development"
 services:
@@ -11,5 +13,5 @@ before_script:
     - psql -c 'create database test_rb_landing' -U postgres
     - psql test_rb_landing -U postgres < app/schema.sql
 script:
-    - black . --check
-    - make test
+    - poetry run black . --check
+    - poetry run make test
