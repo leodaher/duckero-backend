@@ -1,4 +1,5 @@
 import os
+from random import randint, seed
 import tempfile
 
 from faker import Faker
@@ -29,4 +30,6 @@ def client():
 
 @pytest.fixture
 def user(faker):
-    return User.create(email=faker.email())
+    seed()
+    subscribers = randint(0, 10)
+    return User.create(email=faker.email(), subscribers=subscribers)
