@@ -1,8 +1,8 @@
 from datetime import datetime
+from unittest import mock
 
 from freezegun import freeze_time
 from sqlalchemy import desc
-from unittest import mock
 
 from app.models import User
 

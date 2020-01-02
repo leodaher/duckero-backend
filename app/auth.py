@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, current_app, jsonify, request
 from flask_mail import Mail, Message
 
 from app.extensions.mail import mail, send_sign_up_mail

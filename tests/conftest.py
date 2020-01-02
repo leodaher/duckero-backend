@@ -1,9 +1,9 @@
 import os
-from random import randint, seed
 import tempfile
+from random import randint, seed
 
-from faker import Faker
 import pytest
+from faker import Faker
 
 from app import create_app
 from app.database import db

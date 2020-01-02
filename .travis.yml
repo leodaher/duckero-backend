@@ -13,5 +13,6 @@ before_script:
     - psql -c 'create database test_rb_landing' -U postgres
     - psql test_rb_landing -U postgres < app/schema.sql
 script:
+    - poetry run isort **/*.py -c -vb
     - poetry run black . --check
     - poetry run make test
