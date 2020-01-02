@@ -1,7 +1,6 @@
-from uuid import uuid4
 import json
-
 from unittest import mock
+from uuid import uuid4
 
 from app.models import User
 

@@ -1,7 +1,9 @@
 from unittest import mock
+
 from flask import current_app
 from flask_mail import Message
-from app.extensions.mail import mail, send_mail, send_async_mail, send_sign_up_mail
+
+from app.extensions.mail import mail, send_async_mail, send_mail, send_sign_up_mail
 
 
 @mock.patch("app.extensions.mail.Mail.send")

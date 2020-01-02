@@ -1,11 +1,11 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 
-from config import app_config
 from app.auth import auth_api
 from app.database import db
 from app.extensions.mail import mail
+from config import app_config
 
 
 def create_app(config_name):

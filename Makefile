@@ -21,6 +21,7 @@ clean:
 
 format:
 	black . --exclude venv
+	isort -rc .
 
 test: 
 	pytest --verbose --color=yes
